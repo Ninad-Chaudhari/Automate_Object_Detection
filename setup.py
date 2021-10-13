@@ -1,6 +1,7 @@
 import os
-
+import shutil
 PATH_ROOT = "/root/"
+PATH_ABSOLUTE="/Automate_Object_Detection"
 PATH_IMAGES ="/root/images"
 PATH_TFRECORD = "/root/tfrecords"
 os.system("pip install tensorflow==1.13.2")
@@ -10,8 +11,8 @@ os.chdir(PATH_ROOT)
 os.system("git clone https://github.com/iotiotdotin/tf.git")
 os.mkdir(PATH_IMAGES)
 os.mkdir(PATH_TFRECORD)
-
-
+shutil.move(PATH_ABSOLUTE + "/generate_tfrecord.py" ,PATH_ROOT+"/tfrecords" )
+print("Moved tfrecod.py sucessfully")
 print("Testing files in cloned repo")
 os.chdir("/root/tf/research")
 os.system("protoc object_detection/protos/*.proto --python_out=.")
