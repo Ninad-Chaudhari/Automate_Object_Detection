@@ -1,25 +1,28 @@
 import os
 import shutil
-PATH_ROOT = "/root/"
+
+PATH_ROOT = os.getcwd()
 PATH_ABSOLUTE="/Automate_Object_Detection"
-PATH_IMAGES ="/root/images"
-PATH_TFRECORD = "/root/tfrecords"
+PATH_IMAGES = PATH_ROOT + "/images"
+PATH_TFRECORD = PATH_ROOT + "/tfrecords"
 os.system("pip install tensorflow==1.13.2")
 os.system("pip install tf_slim")
 os.system("pip show tensorflow")
-os.chdir(PATH_ROOT)
+
+
 os.system("git clone https://github.com/iotiotdotin/tf.git")
 os.mkdir(PATH_IMAGES)
 os.mkdir(PATH_TFRECORD)
-shutil.move(PATH_ABSOLUTE + "/generate_tfrecord.py" ,PATH_ROOT+"/tfrecords" )
+shutil.move(PATH_ROOT + "/generate_tfrecord.py" ,PATH_ROOT+"/tfrecords" )
+
 print("Moved tfrecod.py sucessfully")
 print("Testing files in cloned repo")
-os.chdir("/root/tf/research")
+os.chdir(PATH_ROOT + "/tf/research")
 os.system("protoc object_detection/protos/*.proto --python_out=.")
-os.chdir("/root/tf/research/slim")
+os.chdir(PATH_ROOT + "/tf/research/slim")
 os.system("python setup.py build")
-os.environ['PYTHONPATH'] += ':/root/tf/research/:/root/tf/research/slim/:/root/tf/research/object_detection/utils/:/root/tf/research/object_detection'
+os.environ['PYTHONPATH'] += ':' + PATH_ROOT + '/tf/research/:'+PATH_ROOT+'/tf/research/slim/:'+PATH_ROOT+'/tf/research/object_detection/utils/:'+PATH_ROOT+'/tf/research/object_detection'
 
 print("Running model_builder_test.py")
-os.chdir("/root/tf/research/")
+os.chdir(PATH_ROOT + "/tf/research/")
 os.system("python object_detection/builders/model_builder_test.py")
