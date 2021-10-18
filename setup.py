@@ -13,7 +13,7 @@ os.system("pip show tensorflow")
 os.system("git clone https://github.com/iotiotdotin/tf.git")
 os.mkdir(PATH_IMAGES)
 os.mkdir(PATH_TFRECORD)
-shutil.move(PATH_ROOT + "/generate_tfrecord.py" ,PATH_ROOT+"/tfrecords" )
+shutil.move(PATH_ROOT + "/generate_tfrecord.py" ,PATH_ROOT+"/tf/research" )
 
 print("Moved tfrecod.py sucessfully")
 print("Testing files in cloned repo")
