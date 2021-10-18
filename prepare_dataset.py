@@ -16,6 +16,9 @@ parser.add_argument("-f",
                     type=str)
 
 args = parser.parse_args()
+filename=""
+if args.filename is not None:
+    filename = args.filename
 file_path = PATH_ROOT + "/images/"+ args.filename
 images_path = PATH_ROOT + "/images"
 output_path = PATH_ROOT + "/tfrecords"
