@@ -28,6 +28,9 @@ from PIL import Image
 from object_detection.utils import dataset_util, label_map_util
 from collections import namedtuple
 
+ 
+
+
 
 # Initiate argument parser
 parser = argparse.ArgumentParser(
@@ -51,14 +54,16 @@ parser.add_argument("-c",
                     help="Path of output .csv file. If none provided, then no file will be "
                          "written.",
                     type=str, default=None)
-
+parser.add_argument("-s",
+                    "--split",
+                    type=int, default=70)
 
 args = parser.parse_args()
 
 if args.image_dir is None:
     args.image_dir = args.file_dir
 
-labelpath = args.output_path + '\label_map.pbtxt'
+labelpath = args.output_path + '/label_map.pbtxt'
 
 
 
@@ -66,7 +71,7 @@ def create_label_map(df) :
     
     labels = df['class'].unique()
 
-    with open(args.output_path + "\label_map.pbtxt", "w+") as f:
+    with open(args.output_path + "/label_map.pbtxt", "w+") as f:
         count = 1
         for label in labels:
             f.write('item { \n')
@@ -192,6 +197,17 @@ def split(df, group):
 
 
 
+def train_test_split(df) :
+    df = df.sample(frac=1)
+    split = args.split
+    train_rows = df.shape[0]*(split/100)
+
+    df_train = df[:train_rows]
+    df_test = df[train_rows:]
+    return df_train , df_test
+
+    
+
 
 def create_tf_example(group, path):
     with tf.io.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
@@ -233,10 +249,25 @@ def create_tf_example(group, path):
     }))
     return tf_example
 
+def write_record(examples , record_name):
+    writer = tf.python_io.TFRecordWriter(args.output_path + "/"+record_name) # Write tfrecord to output path
+    print("Writerline exectuted")
+
+    grouped = split(examples, 'filename') #passing the dataframe , and namedtuple attribute
+
+    for group in grouped:
+        tf_example = create_tf_example(group, path)
+        writer.write(tf_example.SerializeToString())
+    writer.close()
+    print('Successfully created the TFRecord file: {}'.format(args.output_path))
+    if args.csv_path is not None:
+        examples.to_csv(args.csv_path+record_name+".csv" , index=None)
+        print('Successfully created the CSV file: {}'.format(args.csv_path))
 
 
-writer = tf.python_io.TFRecordWriter(args.output_path + "/generated_rec.record") # Write tfrecord to output path
-print("Writerline exectuted")
+
+
+
 
 path = os.path.join(args.image_dir)
 
@@ -255,17 +286,12 @@ if args.file_dir is not None :
 
 
 create_label_map(examples)
-
 labels = (examples['class'].unique()).tolist()
 label_dict = list_to_dict(labels)
 
-grouped = split(examples, 'filename') #passing the dataframe , and namedtuple attribute
+train_example , test_example = train_test_split(examples)
+write_record(train_example,"train.record" )
+write_record(test_example,"test.record" )
 
-for group in grouped:
-    tf_example = create_tf_example(group, path)
-    writer.write(tf_example.SerializeToString())
-writer.close()
-print('Successfully created the TFRecord file: {}'.format(args.output_path))
-if args.csv_path is not None:
-    examples.to_csv(args.csv_path , index=None)
-    print('Successfully created the CSV file: {}'.format(args.csv_path))
+
+

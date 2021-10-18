@@ -19,9 +19,9 @@ args = parser.parse_args()
 filename=""
 if args.filename is not None:
     filename = args.filename
-file_path = PATH_ROOT + "/images/"+ args.filename
+file_path = PATH_ROOT + "/images/"+ filename
 images_path = PATH_ROOT + "/images"
 output_path = PATH_ROOT + "/tfrecords"
 csv_path = PATH_ROOT + "/tfrecords/train.csv"                    
 
-os.system("python "+ PATH_ROOT+"/tf/research/generate_tfrecord.py -f " + file_path +" -i "+ images_path + " -o "+output_path+" -c "+csv_path)
+os.system("python "+ PATH_ROOT+"/tf/research/generate_tfrecord.py -f " + file_path +" -i "+ images_path + " -o "+output_path+" -c "+csv_path+" -s "+args.split)
