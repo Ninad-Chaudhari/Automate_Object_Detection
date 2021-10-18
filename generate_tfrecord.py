@@ -200,7 +200,7 @@ def split(df, group):
 def train_test_split(df) :
     df = df.sample(frac=1)
     split = args.split
-    train_rows = df.shape[0]*(split/100)
+    train_rows = int(df.shape[0]*(split/100))
 
     df_train = df[:train_rows]
     df_test = df[train_rows:]

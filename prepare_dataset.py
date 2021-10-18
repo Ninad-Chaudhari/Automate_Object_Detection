@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-s",
                     "--split",
                     help="Percentage to split data set into",
+                    default="70",
                     type=str)
 parser.add_argument("-f",
                     "--filename",
