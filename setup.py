@@ -21,7 +21,7 @@ os.chdir(PATH_ROOT + "/tf/research")
 os.system("protoc object_detection/protos/*.proto --python_out=.")
 os.chdir(PATH_ROOT + "/tf/research/slim")
 os.system("python setup.py build")
-os.environ['PYTHONPATH'] += ':' + PATH_ROOT + '/tf/research/:'+PATH_ROOT+'/tf/research/slim/:'+PATH_ROOT+'/tf/research/object_detection/utils/:'+PATH_ROOT+'/tf/research/object_detection'
+os.environ['PYTHONPATH'] += ':' + PATH_ROOT + '/tf/research/:'+PATH_ROOT+'/tf/research/slim/:'+PATH_ROOT+'/tf/research/object_detection/utils/:'+PATH_ROOT+'/tf/research/object_detection:'+PATH_ROOT+'/tf'
 
 print("Running model_builder_test.py")
 os.chdir(PATH_ROOT + "/tf/research/")
