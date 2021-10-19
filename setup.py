@@ -5,7 +5,7 @@ PATH_ROOT = os.getcwd()
 PATH_ABSOLUTE="/Automate_Object_Detection"
 PATH_IMAGES = PATH_ROOT + "/images"
 PATH_TFRECORD = PATH_ROOT + "/tfrecords"
-os.system("pip install tensorflow==1.13.2")
+os.system("pip install tensorflow")
 os.system("pip install tf_slim")
 os.system("pip show tensorflow")
 
