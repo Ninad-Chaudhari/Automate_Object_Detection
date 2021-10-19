@@ -10,7 +10,7 @@ os.system("pip install tf_slim")
 os.system("pip show tensorflow")
 
 
-os.system("https://github.com/Ninad-Chaudhari/tf.git")
+os.system("git clone https://github.com/Ninad-Chaudhari/tf.git")
 os.mkdir(PATH_IMAGES)
 os.mkdir(PATH_TFRECORD)
 shutil.move(PATH_ROOT + "/generate_tfrecord.py" ,PATH_ROOT+"/tf/research" )
