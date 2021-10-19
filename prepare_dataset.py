@@ -31,6 +31,8 @@ csv_path = PATH_ROOT + "/tfrecords/train.csv"
 
 os.system("python "+ PATH_ROOT+"/tf/research/generate_tfrecord.py -f " + file_path +" -i "+ images_path + " -o "+output_path+" -c "+csv_path+" -s "+args.split)
 
+
+print("Downloading pretrained model...")
 # Downloading pretrained model
 os.chdir(PATH_ROOT + "/tf")
 MODEL = 'ssd_mobilenet_v1_coco_2017_11_17'
@@ -55,4 +57,5 @@ os.remove(MODEL_FILE)
 if (os.path.exists(DEST_DIR)):
   shutil.rmtree(DEST_DIR)
 os.rename(MODEL, DEST_DIR)
+print("Moving config file to tf folder...")
 shutil.move(PATH_ROOT+"/tf/research/object_detection/samples/configs/ssd_mobilenet_v1_pets.config", PATH_ROOT +"/tf") 
