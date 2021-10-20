@@ -7,7 +7,8 @@ import tarfile
 from requests import get
 
 PATH_ROOT = os.getcwd()
-
+PATH_ROOT = PATH_ROOT.replace(" ","")
+print(PATH_ROOT)
 parser = argparse.ArgumentParser(
     description="Data generation in tfrecord fromat")
 parser.add_argument("-s",
