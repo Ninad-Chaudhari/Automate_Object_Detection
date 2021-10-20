@@ -21,14 +21,16 @@ args = parser.parse_args()
 steps = args.steps
 classes = args.classes
 
-shutil.move(PATH_ROOT+"/config.py", PATH_ROOT +"/tf/research")
-
 print("Configuring the model...")
 os.system("python " +PATH_ROOT+"/tf/research/config.py -r "+PATH_ROOT+" -s "+steps+" -c "+classes)
+
 
 print("Started Training...")
 os.system("protoc "+PATH_ROOT+ "/tf/research/object_detection/protos/*.proto --python_out=.")
 
+os.environ['PYTHONPATH'] += ':' + PATH_ROOT + '/tf/research/:'+PATH_ROOT+'/tf/research/slim/:'+PATH_ROOT+'/tf/research/object_detection/utils/:'+PATH_ROOT+'/tf/research/object_detection'
+
+#os.chdir(PATH_ROOT + "/tf/research")
 TRAIN = PATH_ROOT + "/tf/research/object_detection/legacy/train.py"
 TRAIN_DIR = PATH_ROOT+"/tf/trained"
 CONFIG = PATH_ROOT+"/tf/ssd_mobilenet_v1_pets.config"
