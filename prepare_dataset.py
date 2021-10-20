@@ -58,4 +58,4 @@ if (os.path.exists(DEST_DIR)):
   shutil.rmtree(DEST_DIR)
 os.rename(MODEL, DEST_DIR)
 print("Moving config file to tf folder...")
-shutil.move(PATH_ROOT+"/tf/research/object_detection/samples/configs/ssd_mobilenet_v1_pets.config", PATH_ROOT +"/tf") 
+shutil.move(PATH_ROOT+"/ssd_mobilenet_v1_pets.config", PATH_ROOT +"/tf") 
