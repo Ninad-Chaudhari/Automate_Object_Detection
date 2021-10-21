@@ -3,6 +3,7 @@ import argparse
 import shutil
 
 PATH_ROOT = os.getcwd()
+PATH_ROOT = PATH_ROOT.replace(" ","")
 
 parser = argparse.ArgumentParser(
     description="Data generation in tfrecord fromat")
