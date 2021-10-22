@@ -26,3 +26,4 @@ os.environ['PYTHONPATH'] += ':' + PATH_ROOT + '/tf/research/:'+PATH_ROOT+'/tf/re
 print("Running model_builder_test.py")
 os.chdir(PATH_ROOT + "/tf/research/")
 os.system("python object_detection/builders/model_builder_test.py")
+os.chdir(PATH_ROOT)

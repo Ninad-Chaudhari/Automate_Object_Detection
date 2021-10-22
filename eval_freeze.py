@@ -25,3 +25,4 @@ PATH_OUTPUT = PATH_ROOT +"/tf/fine_tuned_model"
 LATEST_CHECK = PATH_CHECK+ ("/"+get_latest_checkpoint(PATH_CHECK))
 os.system("protoc "+PATH_ROOT+"/tf/research/object_detection/protos/*.proto --python_out=.")
 os.system("python "+PATH_GRAPH+" --input_type=image_tensor --pipeline_config_path="+PATH_CONFIG+" --output_directory="+PATH_OUTPUT+" --trained_checkpoint_prefix="+LATEST_CHECK)
+os.chdir(PATH_ROOT)
