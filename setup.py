@@ -2,7 +2,9 @@ import os
 import shutil
 
 PATH_ROOT = os.getcwd()
-PATH_ABSOLUTE="/Automate_Object_Detection"
+PATH_ROOT = PATH_ROOT.replace(" ","")
+print(PATH_ROOT)
+
 PATH_IMAGES = PATH_ROOT + "/images"
 PATH_TFRECORD = PATH_ROOT + "/tfrecords"
 os.system("pip install tensorflow==1.13.2")
