@@ -6,10 +6,12 @@ PATH_ABSOLUTE="/Automate_Object_Detection"
 PATH_IMAGES = PATH_ROOT + "/images"
 PATH_TFRECORD = PATH_ROOT + "/tfrecords"
 os.system("pip install tensorflow==1.13.2")
+print("Tensorflow installed")
 os.system("pip install tf_slim")
+print("tf_slim installed")
 os.system("pip show tensorflow")
 
-
+print("Cloning repository from https://github.com/iotiotdotin/tf.git")
 os.system("git clone https://github.com/iotiotdotin/tf.git")
 os.mkdir(PATH_IMAGES)
 os.mkdir(PATH_TFRECORD)

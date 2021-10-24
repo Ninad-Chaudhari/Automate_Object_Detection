@@ -217,7 +217,10 @@ def create_tf_example(group, path):
     width, height = image.size
 
     filename = group.filename.encode('utf8')
-    image_format = b'jpg'
+    if(group.filename.find(".jpg")==-1):
+        image_format = b'png'
+    else:
+        image_format=b'jpg'
     xmins = []
     xmaxs = []
     ymins = []
@@ -261,7 +264,7 @@ def write_record(examples , record_name):
     writer.close()
     print('Successfully created the TFRecord file: {}'.format(args.output_path))
     if args.csv_path is not None:
-        examples.to_csv(args.csv_path+record_name+".csv" , index=None)
+        examples.to_csv(args.csv_path+"/"+record_name+".csv" , index=None)
         print('Successfully created the CSV file: {}'.format(args.csv_path))
 
 
