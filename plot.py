@@ -77,7 +77,7 @@ def load_image_into_numpy_array(image):
 # to image5.jpg
 # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
 
-df = pd.read_csv(PATH_ROOT + "/tfrecords/train.csvtest.record.csv")
+df = pd.read_csv(PATH_ROOT + "/tfrecords/test.record.csv")
 test_filenames = df["filename"].tolist()
 
 

@@ -22,7 +22,8 @@ import xml.etree.ElementTree as ET
 import argparse
 import json
 
-import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'    # Suppress TensorFlow logging (1)
+import tensorflow.compat.v1 as tf
 
 from PIL import Image
 from object_detection.utils import dataset_util, label_map_util
@@ -253,7 +254,7 @@ def create_tf_example(group, path):
     return tf_example
 
 def write_record(examples , record_name):
-    writer = tf.python_io.TFRecordWriter(args.output_path + "/"+record_name) # Write tfrecord to output path
+    writer = tf.io.TFRecordWriter(args.output_path + "/"+record_name) # Write tfrecord to output path
     print("Writerline exectuted")
 
     grouped = split(examples, 'filename') #passing the dataframe , and namedtuple attribute
