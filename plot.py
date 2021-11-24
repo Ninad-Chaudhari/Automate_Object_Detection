@@ -158,4 +158,5 @@ for image_path in test_filenames:
         line_thickness=8)
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
+os.chdir(PATH_ROOT)
 
