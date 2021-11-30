@@ -149,32 +149,64 @@ def xml_to_csv(path):
         The produced dataframe
     """
 
-    xml_list = []
+    record_list = []
+    filetype = 0
     annot =  glob.glob(path + '/*.xml')
+    if(len(annot)==0):
+        annot =  glob.glob(path + '/*.json')
+        filetype=1
 
-    for xml_file in annot:
-        tree = ET.parse(xml_file)
-        root = tree.getroot()
-        filename = root.find('filename').text
-        width = int(root.find('size').find('width').text)
-        height = int(root.find('size').find('height').text)
-        for member in root.findall('object'):
-            bndbox = member.find('bndbox')
-            value = (filename,
-                     width,
-                     height,
-                     member.find('name').text,
-                     int(float(bndbox.find('xmin').text)),
-                     int(float(bndbox.find('ymin').text)),
-                     int(float(bndbox.find('xmax').text)),
-                     int(float(bndbox.find('ymax').text)),
-                     )
-            xml_list.append(value)
+    print("Total files : ",len(annot))
+    if filetype==0:
+        print("File format : XML")
+        for xml_file in annot:
+            tree = ET.parse(xml_file)
+            root = tree.getroot()
+            filename = root.find('filename').text
+            width = int(root.find('size').find('width').text)
+            height = int(root.find('size').find('height').text)
+            for member in root.findall('object'):
+                bndbox = member.find('bndbox')
+                value = (filename,
+                        width,
+                        height,
+                        member.find('name').text,
+                        int(float(bndbox.find('xmin').text)),
+                        int(float(bndbox.find('ymin').text)),
+                        int(float(bndbox.find('xmax').text)),
+                        int(float(bndbox.find('ymax').text)),
+                        )
+                record_list.append(value)
+    if filetype==1:
+        print("File format : JSON")
+        for json_file in annot:
+            f = open(json_file)
+            data = json.load(f)
+            filename = os.path.basename(data["imagePath"])
+            width =data["imageWidth"]
+            height = data["imageHeight"]
+            for shape in data["shapes"]:
+                xmin = shape["points"][0][0]
+                ymin = shape["points"][0][1]
+                xmax = shape["points"][1][0]
+                ymax = shape["points"][1][1]
+                value = (filename,
+                         width,
+                         height,
+                         shape["label"],
+                         int(float(xmin)),
+                         int(float(ymin)),
+                         int(float(xmax)),
+                         int(float(ymax))
+                        )
+                record_list.append(value)
 
     column_name = ['filename', 'width', 'height',
                    'class', 'xmin', 'ymin', 'xmax', 'ymax']
-    xml_df = pd.DataFrame(xml_list, columns=column_name)
+    xml_df = pd.DataFrame(record_list, columns=column_name)
     return xml_df
+
+   
 
 
 
@@ -254,6 +286,11 @@ def create_tf_example(group, path):
     return tf_example
 
 def write_record(examples , record_name):
+
+    if args.csv_path is not None:
+        examples.to_csv(args.csv_path+"/"+record_name+".csv" , index=None)
+        print('Successfully created the CSV file: {}'.format(args.csv_path))
+
     writer = tf.io.TFRecordWriter(args.output_path + "/"+record_name) # Write tfrecord to output path
     print("Writerline exectuted")
 
@@ -264,13 +301,6 @@ def write_record(examples , record_name):
         writer.write(tf_example.SerializeToString())
     writer.close()
     print('Successfully created the TFRecord file: {}'.format(args.output_path))
-    if args.csv_path is not None:
-        examples.to_csv(args.csv_path+"/"+record_name+".csv" , index=None)
-        print('Successfully created the CSV file: {}'.format(args.csv_path))
-
-
-
-
 
 
 path = os.path.join(args.image_dir)
@@ -285,7 +315,6 @@ if args.file_dir is not None :
         examples = json_to_csv(args.file_dir)  
 
     else : 
-        print("File format : XML")
         examples = xml_to_csv(args.file_dir) # path to xml annotations directory
 
 
