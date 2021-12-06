@@ -182,7 +182,9 @@ def xml_to_csv(path):
         for json_file in annot:
             f = open(json_file)
             data = json.load(f)
-            filename = os.path.basename(data["imagePath"])
+            file_path = data["imagePath"].replace("\\","/")
+            filename = os.path.basename(file_path)
+            
             width =data["imageWidth"]
             height = data["imageHeight"]
             for shape in data["shapes"]:
