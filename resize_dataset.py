@@ -96,7 +96,7 @@ def resize_json(file , output_path ,newSize):
 
     h = f_json["imageHeight"]
     w = f_json["imageWidth"]
-    img_name = os.path.basename(f_json["imagePath"])
+    img_name = os.path.basename(f_json["imagePath"].replace("\\","/"))
 
     shapes = f_json["shapes"]
     x_scale = newSize[0] / h
@@ -126,8 +126,6 @@ def resize_json(file , output_path ,newSize):
         start_p = (int(points[0][0]) , int(points[0][1]))
         end_p = (int(points[1][0]) ,int(points[1][1]))
         img = cv2.rectangle(img,start_p,end_p, (255, 0, 0), 1)
-
-    cv2.imwrite(os.path.join(r"C:\Users\ncisb\Desktop\json_images\bboxes", img_name),img)
     
     f.close()
 
@@ -141,11 +139,11 @@ out_path = os.path.join(PATH_ROOT,"images")
 format = ""
 
 
-files = glob.glob(dataset_path+"\*.json")
+files = glob.glob(dataset_path+"/*.json")
 if len(files)==0:
     print("Annotation file format : XML")
     format = "xml"
-    files = glob.glob(dataset_path+"\*.xml")
+    files = glob.glob(dataset_path+"/*.xml")
 else :
     print("Annotation file format: JSON")
     format="json"
